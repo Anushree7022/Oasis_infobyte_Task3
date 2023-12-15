@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link href="todolist.css" rel="stylesheet">
+</head>
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    font-family: 'poppins',sans-serif;
+    box-sizing: border-box;
+}
+.container{
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg,#153677,#4e085f);
+    padding: 10px;
+}
+.todolist{
+    width: 100%;
+    max-width: 540px;
+    background: #fff;
+    margin: 100px auto 20px;
+    padding: 40px 30px 70px;
+}
+.todolist h2{
+    counter-reset: #002765;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.todolist img{
+    width: 30px;
+    margin-left:10px ;
+}
+.row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #efcdda;
+    border-radius: 30px;
+    padding-left: 20px;
+    margin-bottom: 25px;
+
+}
+input{
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 10px;
+    font-weight: 14px;
+}
+button{
+    border: none;
+    outline: none;
+    padding: 16px 50px;
+    background: rgb(242, 68, 97);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 40px;
+}
+.lists {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f1ccdb;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        li.checked {
+            background: #e0f7fa;
+        }
+
+        li span {
+            color: #f8116d;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+</style>
+<body>
+    <div class="container">
+        <div class="todolist">
+            <h2>To-Do List<img src="todolist.svg"/></h2>
+            <div class="row">
+                <input type="text" id="input-box" placeholder="Add your task">
+                <button onclick="AddTask()">Add</button>
+            </div>
+            <div class="lists">
+                <div class="list2">
+                    <h3>Pending task</h3>
+                    <ul id="pending-list">
+                    </ul>
+                </div>
+                <div class="list2">
+                    <h3>Completed task</h3>
+                    <ul id="completed-list">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+       const inputBox = document.getElementById("input-box");
+        const pendingList = document.getElementById("pending-list");
+        const completedList = document.getElementById("completed-list");
+function AddTask() {
+            if (inputBox.value === '') {
+                alert("You must write something!");
+            } else {
+                let li = document.createElement("li");
+                li.innerHTML = `
+                    <span>${inputBox.value}</span>
+                    <span onclick="completeTask(this)">✔</span>
+                    <span onclick="editTask(this)">✍</span>
+                    <span onclick="deleteTask(this)">❌</span>
+                `;
+                pendingList.appendChild(li);
+            }
+            inputBox.value="";
+}
+
+function completeTask(element) {
+            const task = element.parentElement;
+            task.classList.toggle("checked");
+            if (task.classList.contains("checked")) {
+                completedList.appendChild(task);
+            } else {
+                pendingList.appendChild(task);
+            }
+            saveData();
+        }
+
+        function deleteTask(element) {
+            element.parentElement.remove();
+            saveData();
+ }
+function editTask(element) {
+            const task = element.parentElement;
+            const newText = prompt("Edit task:", task.querySelector("span:first-child").innerText);
+            if (newText !== null) {
+                task.querySelector("span:first-child").innerText = newText;
+       }
+       saveData();
+}
+    </script>
+</body>
+</html>
